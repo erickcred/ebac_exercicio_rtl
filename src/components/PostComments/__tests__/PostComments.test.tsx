@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-// import Post from '..'
 import PostComment from '..'
 
 describe('Teste para o componente PostComment', () => {
@@ -10,21 +9,26 @@ describe('Teste para o componente PostComment', () => {
     })
 
     test('Deve inserir dois comentários', () => {
-        render(<PostComment />)
-        fireEvent.change(screen.getByTestId('textarea-comentario'), {
+        const { debug } = render(<PostComment />)
+        
+        fireEvent.change(screen.getByTestId('textarea-comentario'),  {
             target: {
-                value: 'Tenho um carrinho igual a esse mas falta o boneco'
+                value: "Tenho um carrinho igual somente falta o boneco"
             }
         })
-        fireEvent.submit(screen.getByTestId('btn-adicionar-comentario'));
+        fireEvent.click(screen.getByTestId('btn-adicionar-comentario'))
 
-        fireEvent.change(screen.getByTestId('textarea-comentario'), {
+        fireEvent.change(screen.getByTestId('textarea-comentario'),  {
             target: {
-                value: 'Show de bola, lebrei da minha infancia rsrss'
+                value: "comentario"
             }
-        });
-        fireEvent.submit(screen.getByTestId('btn-adicionar-comentario'));
-
+        })
+        fireEvent.click(screen.getByTestId('btn-adicionar-comentario'))
+        
+        // eslint-disable-next-line testing-library/no-debugging-utils
+        debug()
         expect(screen.getAllByTestId('comentario')).toHaveLength(2)
+        expect(screen.getByText('Tenho um carrinho igual somente falta o boneco')).toBeInTheDocument()
+        expect(screen.getByText('comentario')).toBeInTheDocument()
     });
 });
